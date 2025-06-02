@@ -232,43 +232,51 @@ class _MainScreenState extends State<MainScreen> {
   void _checkAndShowNotification(FireDetectionData data) {
     String? notificationTitle;
     String? notificationBody;
-    String? soundName; // Nama file suara
 
     bool shouldNotify = false;
+    // Logika notifikasi Anda tetap sama
     if (data.fuzzyStatus == 'WASPADA') {
       notificationTitle = 'Peringatan: Status Waspada Terdeteksi!';
       notificationBody =
-          'Tingkat bahaya: {data.fuzzyDangerLevel.toStringAsFixed(1)}%. Suhu: {data.temperature.toStringAsFixed(1)} b0C, Gas: {data.gas} ppm. Harap periksa kondisi sekitar.';
-      soundName = 'suara_waspada'; // Nama file suara untuk WASPADA (tanpa ekstensi)
+          'Tingkat bahaya: ${data.fuzzyDangerLevel.toStringAsFixed(1)}%. Suhu: ${data.temperature.toStringAsFixed(1)}°C, Gas: ${data.gas} ppm. Harap periksa kondisi sekitar.';
       shouldNotify = true;
     } else if (data.fuzzyStatus == 'BAHAYA') {
       notificationTitle = '🚨 DARURAT: STATUS BAHAYA TERDETEKSI! 🚨';
       notificationBody =
-          'Tingkat bahaya SANGAT TINGGI: {data.fuzzyDangerLevel.toStringAsFixed(1)}%. SEGERA LAKUKAN EVAKUASI dan hubungi pihak berwenang!';
-      soundName = 'alarm_kebakaran'; // Nama file suara untuk BAHAYA (tanpa ekstensi)
+          'Tingkat bahaya SANGAT TINGGI: ${data.fuzzyDangerLevel.toStringAsFixed(1)}%. SEGERA LAKUKAN EVAKUASI dan hubungi pihak berwenang!';
       shouldNotify = true;
     }
 
-    if (shouldNotify && notificationTitle != null && notificationBody != null && soundName != null) {
-      _showNotification(notificationTitle, notificationBody, soundName);
+    if (shouldNotify && notificationTitle != null && notificationBody != null) {
+      _showNotification(notificationTitle, notificationBody);
     }
   }
 
-  Future<void> _showNotification(String title, String body, String soundName) async {
+  Future<void> _showNotification(String title, String body) async {
+    // Ganti 'nama_file_suara_anda' dengan nama file suara Anda (tanpa ekstensi)
+    // yang telah Anda tempatkan di android/app/src/main/res/raw/
+    const String customSoundName = 'alarm_kebakaran'; // CONTOH NAMA FILE SUARA
+
+    // Pola getar kustom: [durasi mati, durasi hidup, durasi mati, durasi hidup, ...] dalam milidetik
+    // Contoh: getar 0.5 detik, diam 0.5 detik, getar 0.5 detik
     final Int64List vibrationPattern = Int64List.fromList([0, 500, 500, 500]);
+
 
     final AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-      'fire_detection_channel_critical',
-      'Peringatan Deteksi Api Kritis',
+      'fire_detection_channel_critical', // ID Channel unik
+      'Peringatan Deteksi Api Kritis', // Nama Channel
       channelDescription:
           'Notifikasi penting untuk peringatan dan bahaya deteksi api.',
-      importance: Importance.max,
-      priority: Priority.high,
+      importance: Importance.max, // Prioritas tertinggi
+      priority: Priority.high, // Prioritas tertinggi
       showWhen: true,
-      enableVibration: true,
-      sound: RawResourceAndroidNotificationSound(soundName),
-      vibrationPattern: vibrationPattern,
+      enableVibration: true, // Pastikan ini true
+      // Aktifkan baris di bawah ini dan sesuaikan nama filenya
+      sound: const RawResourceAndroidNotificationSound(customSoundName),
+      // Jika ingin pola getar kustom, aktifkan baris di bawah ini
+      // Jika tidak, getaran default akan digunakan jika enableVibration true
+      vibrationPattern: vibrationPattern, // Tambahkan pola getar
       ticker: 'Peringatan Api!',
       color: Colors.red,
       ledColor: Colors.red,
@@ -278,7 +286,7 @@ class _MainScreenState extends State<MainScreen> {
     final NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
-      0,
+      0, // ID Notifikasi
       title,
       body,
       platformChannelSpecifics,
