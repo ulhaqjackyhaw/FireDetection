@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "696576915587",
+    "firebase_url": "https://tubes-e7c2f-default-rtdb.firebaseio.com",
+    "project_id": "tubes-e7c2f",
+    "storage_bucket": "tubes-e7c2f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:696576915587:android:e35e7a0a844cd69a82c3b6",
+        "android_client_info": {
+          "package_name": "com.example.appmonitor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpcrTwU-Q7pmTpgzFHlWLhI3liq96MPMI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
