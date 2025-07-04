@@ -15,6 +15,7 @@ dependencies:
   flutter_local_notifications: ^19.2.1
   intl: ^0.19.0
   google_fonts: ^6.2.1
+  lottie: ^2.2.0 # Added for Lottie animation
 
 dev_dependencies:
   flutter_test:
@@ -24,3 +25,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/intro.json
+    - assets/water.json
